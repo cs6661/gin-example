@@ -1,7 +1,7 @@
 package router
 
 import (
-	"gin-example/common/jwt"
+	"gin-example/pkg/jwt"
 	"github.com/gin-gonic/gin"
 )
 

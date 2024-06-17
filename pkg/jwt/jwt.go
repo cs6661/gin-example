@@ -15,6 +15,7 @@ type JwtClaims struct {
 	jwt.RegisteredClaims
 }
 
+// Valid 校验token
 func (j *JwtClaims) Valid(token string) (*JwtClaims, error) {
 	jwtToken, err := jwt.ParseWithClaims(token, &JwtClaims{}, func(token *jwt.Token) (interface{}, error) {
 		return signingKey, nil

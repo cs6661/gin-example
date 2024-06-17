@@ -1,0 +1,10 @@
+app:
+  name: "ccc"
+  mode: "dev"
+  version: "1.0.0"
+
+mysql:
+  address: localhost:8080
+  dbname: test
+  user: root
+  password: 123
