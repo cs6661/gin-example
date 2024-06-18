@@ -16,14 +16,11 @@ var Logger *zap.Logger
 func getEncoder() zapcore.Encoder {
 	// 获取一个指定的的EncoderConfig，进行自定义
 	encodeConfig := zap.NewProductionEncoderConfig()
-
 	// 设置每个日志条目使用的键。如果有任何键为空，则省略该条目的部分。
-
 	// 序列化时间。eg: 2022-09-01T19:11:35.921+0800
 	encodeConfig.EncodeTime = zapcore.TimeEncoderOfLayout("2006-01-02 15:04:05.000")
 	// "time":"2022-09-01T19:11:35.921+0800"
 	encodeConfig.TimeKey = "time"
-
 	// 将Level序列化为全大写字符串。例如，将info level序列化为INFO。
 	encodeConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 	// 以 package/file:行 的格式 序列化调用程序，从完整路径中删除除最后一个目录外的所有目录。

@@ -9,11 +9,11 @@ import (
 var Conf = new(AppConfig)
 
 type AppConfig struct {
-	Name       string `yaml:"name"`
-	Mode       string `yaml:"mode"`
-	Version    string `yaml:"version"`
-	*Mysql     `yaml:"mysql"`
-	*LogConfig `yaml:"log"`
+	Name      string     `yaml:"name"`
+	Mode      string     `yaml:"mode"`
+	Version   string     `yaml:"version"`
+	Mysql     *Mysql     `yaml:"mysql"`
+	LogConfig *LogConfig `yaml:"log"`
 }
 
 type Mysql struct {
@@ -41,11 +41,11 @@ type LumberJack struct {
 }
 
 func init() {
-	viper.SetConfigName("shootz")
+	viper.SetConfigName("conf")
 	viper.SetConfigType("yaml")
-	viper.AddConfigPath("/etc/shootz/")
-	viper.AddConfigPath("$HOME/.shootz")
-	viper.AddConfigPath(".")
+	viper.AddConfigPath("/etc/config/")
+	viper.AddConfigPath("$HOME/.config")
+	viper.AddConfigPath("./config")
 
 	err := viper.ReadInConfig()
 	if err != nil {
@@ -54,6 +54,10 @@ func init() {
 	// 把读取到的配置信息反序列化到Conf变量中
 	if err = viper.Unmarshal(&Conf); err != nil {
 		panic(fmt.Errorf("unmarshal to Conf failed, err:%v", err))
+	}
+
+	if err = viper.UnmarshalKey("log", &Conf.LogConfig); err != nil {
+		panic(fmt.Errorf("unmarshal to LogConfig failed, err:%v", err))
 	}
 
 }

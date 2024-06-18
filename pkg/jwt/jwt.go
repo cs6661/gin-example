@@ -9,7 +9,7 @@ import (
 	"github.com/google/uuid"
 )
 
-var signingKey = []byte("backend.com53cr3t")
+var signingKey = []byte("cs.com53cr3t")
 
 type JwtClaims struct {
 	jwt.RegisteredClaims
