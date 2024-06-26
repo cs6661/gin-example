@@ -40,6 +40,16 @@ type LumberJack struct {
 	Compress   bool `yaml:"compress"`   // 是否压缩/归档旧文件
 }
 
+type WxConfig struct {
+	AppId        string `yaml:"appid"`
+	Secret       string `yaml:"secret"`
+	MchId        string `yaml:"mchid"`
+	CertSerialNo string `yaml:"certSerialNo"`
+	ApiV3Key     string `yaml:"apiV3Key"`
+	CertPath     string `yaml:"certPath"`
+	KeyPath      string `yaml:"keyPath"`
+}
+
 func init() {
 	viper.SetConfigName("conf")
 	viper.SetConfigType("yaml")

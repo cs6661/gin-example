@@ -8,6 +8,20 @@ mysql:
   user: root
   password: 123
 
+redis:
+  address: "127.0.0.1:6379"
+  password: ""
+  db: 0
+
+miniprogram:
+  appid:
+  secret:
+  mchid:
+  certSerialNo:
+  apiV3Key:
+  certPath:
+  keyPath:
+
 log:
   path: ./logs # 日志文件目录
   logFileName: gin.log # 日志文件名
