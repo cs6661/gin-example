@@ -3,6 +3,9 @@ package jwt
 import (
 	"errors"
 	"fmt"
+	"github.com/gin-gonic/gin"
+	"net/http"
+	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -103,4 +106,27 @@ func (j *JwtClaims) RefreshToken(aToken, rToken string) (newAToken, newRToken st
 
 func (j *JwtClaims) GetIssuedAt() (*jwt.NumericDate, error) {
 	return j.IssuedAt, nil
+}
+
+func (j *JwtClaims) JwtMiddleware() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		var userId int64
+		token := c.GetHeader("Authorization")
+		if len(token) > 8 {
+			token = token[7:]
+			if tokenClaims, err := j.Valid(token); err == nil {
+				if len(tokenClaims.Subject) > 0 {
+					// 转int64
+					userId, _ = strconv.ParseInt(tokenClaims.Subject, 10, 64)
+					c.Set("userId", userId)
+				}
+			}
+		}
+		if userId == 0 {
+			c.AbortWithStatusJSON(http.StatusUnauthorized, gin.H{"error": "未授权"})
+			return
+		}
+		c.Next()
+		return
+	}
 }
