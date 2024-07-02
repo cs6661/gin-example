@@ -3,7 +3,7 @@ mode: dev
 version: 1.0.0
 
 mysql:
-  address: localhost:8080
+  address: localhost:3306
   name: test
   user: root
   password: 123

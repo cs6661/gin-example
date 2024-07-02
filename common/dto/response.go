@@ -16,3 +16,10 @@ func ResponseError(ctx *gin.Context, c MyCode) {
 	}
 	ctx.AbortWithStatusJSON(520, rd)
 }
+
+func HttpError(c *gin.Context, errorCode MyCode, message string) {
+	c.AbortWithStatusJSON(520, &ResponseData{
+		Code:    errorCode,
+		Message: message,
+	})
+}
