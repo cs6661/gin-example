@@ -8,6 +8,7 @@ import (
 	"gin-example/pkg/logger"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
+	"net/http"
 )
 
 //var AppRouters = make([]func(), 0)
@@ -29,6 +30,11 @@ func main() {
 	r.Use(middleware.RequestLogMiddleware(),
 		middleware.GinRecovery(true))
 	router.InitRouter(r)
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"msg": "404",
+		})
+	})
 	if err := r.Run(":80"); err != nil {
 		logger.Logger.Fatal("run fatal", zap.Error(err))
 	}
