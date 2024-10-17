@@ -21,8 +21,8 @@ func main() {
 	r := gin.New()
 	// 初始化日志
 	logger.InitLogger(config.Conf.LogConfig)
-	p := middleware.NewPrometheus("gin-example")
-	p.Use(r)
+	//p := middleware.NewPrometheus("gin-example")
+	//p.Use(r)
 	// 初始化数据库连接
 	if err := db.InitMysql(); err != nil {
 		logger.Logger.Error("InitMysql failed", zap.Error(err))

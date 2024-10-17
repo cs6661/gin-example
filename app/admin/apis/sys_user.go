@@ -1,8 +1,10 @@
 package apis
 
 import (
+	"context"
 	"gin-example/app/admin/models"
 	"gin-example/app/admin/service"
+	"gin-example/common/db"
 	"gin-example/common/dto"
 	"gin-example/pkg/logger"
 	"net/http"
@@ -15,13 +17,21 @@ import (
 // 放入底层初始化
 
 type SysUserApi struct {
-	Context *gin.Context
+	Context context.Context
 	Logger  *zap.Logger
 	Orm     *gorm.DB
 	Errors  error
 }
 
-var serv = service.SysUser{}
+func NewSysUserApi() *SysUserApi {
+	return &SysUserApi{
+		Context: context.Background(),
+		Logger:  logger.Logger,
+		Orm:     db.GormDB,
+	}
+}
+
+var serv = service.NewSysUser()
 
 func (s *SysUserApi) Get(c *gin.Context) {
 	req := &models.SysUser{}
@@ -31,11 +41,11 @@ func (s *SysUserApi) Get(c *gin.Context) {
 		dto.ResponseError(c, dto.ParameterInvalid)
 		return
 	}
-	err = serv.QueryUser(req)
+	res, err := serv.QueryUser(req)
 	if err != nil {
 		logger.Logger.Error("查询失败", zap.Error(err))
 		dto.HttpError(c, dto.MySQLQueryError, err.Error())
 		return
 	}
-	c.JSON(http.StatusOK, "")
+	c.JSON(http.StatusOK, res)
 }

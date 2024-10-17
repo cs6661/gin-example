@@ -6,7 +6,7 @@ mysql:
   address: localhost:3306
   name: test
   user: root
-  password: 123
+  password: caosi666
 
 redis:
   address: "127.0.0.1:6379"

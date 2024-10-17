@@ -12,8 +12,8 @@ func init() {
 }
 
 func registerSysUserRouter(v1 *gin.RouterGroup, authMiddleware *jwt.JwtClaims) {
-	api := apis.SysUserApi{}
-	r := v1.Group("/sys-user").Use(authMiddleware.JwtMiddleware())
+	api := apis.NewSysUserApi()
+	r := v1.Group("/sys-user") /*.Use(authMiddleware.JwtMiddleware())*/
 	{
 		r.GET("", api.Get)
 	}
