@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"gin-example/app/admin/models"
 	"gin-example/common/db"
+	"github.com/gin-gonic/gin"
 	"gorm.io/gorm"
 )
 
@@ -21,9 +22,9 @@ func NewSysUser() *SysUser {
 	}
 }
 
-func (s *SysUser) QueryUser(req *models.SysUser) ([]models.User, error) {
+func (s *SysUser) QueryUser(c *gin.Context, req *models.SysUser) ([]models.User, error) {
 	res := make([]models.User, 0)
-	err := db.GormDB.Find(&res).Error
+	err := db.GormDB.WithContext(c.Request.Context()).Limit(100).Find(&res).Error
 	//err := s.Orm.First(&res).Error
 	if err != nil {
 		return res, err

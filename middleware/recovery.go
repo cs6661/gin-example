@@ -13,8 +13,6 @@ import (
 	"go.uber.org/zap"
 )
 
-var Logger = logger.Logger
-
 func GinRecovery(stack bool) gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
@@ -31,8 +29,9 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 				}
 
 				httpRequest, _ := httputil.DumpRequest(c.Request, false)
+				// todo 报警
 				if brokenPipe {
-					logger.Logger.Error(c.Request.URL.Path,
+					logger.Ctx(c).Error(c.Request.URL.Path,
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)
@@ -43,13 +42,13 @@ func GinRecovery(stack bool) gin.HandlerFunc {
 				}
 
 				if stack {
-					logger.Logger.Error("[Recovery from panic]",
+					logger.Ctx(c).Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 						zap.String("stack", string(debug.Stack())),
 					)
 				} else {
-					logger.Logger.Error("[Recovery from panic]",
+					logger.Ctx(c).Error("[Recovery from panic]",
 						zap.Any("error", err),
 						zap.String("request", string(httpRequest)),
 					)

@@ -37,11 +37,12 @@ func (s *SysUserApi) Get(c *gin.Context) {
 	req := &models.SysUser{}
 	err := c.ShouldBindQuery(req)
 	if err != nil {
-		logger.Logger.Error("参数错误", zap.Error(err))
+		logger.Ctx(c).Error("参数错误", zap.Error(err))
 		dto.ResponseError(c, dto.ParameterInvalid)
 		return
 	}
-	res, err := serv.QueryUser(req)
+	res, err := serv.QueryUser(c, req)
+	logger.Ctx(c).Info("fff")
 	if err != nil {
 		logger.Logger.Error("查询失败", zap.Error(err))
 		dto.HttpError(c, dto.MySQLQueryError, err.Error())

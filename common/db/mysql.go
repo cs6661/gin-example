@@ -25,7 +25,12 @@ func InitMysql() error {
 		logger.Logger.Error("mysql connect err", zap.Error(err))
 		return err
 	}
-	if GormDB, err = gorm.Open(mysql.Open(connect), &gorm.Config{}); err != nil {
+	newLogger := NewLogger(Config{
+		SlowThreshold:             200 * time.Millisecond,
+		LogLevel:                  Info,
+		IgnoreRecordNotFoundError: false,
+	})
+	if GormDB, err = gorm.Open(mysql.Open(connect), &gorm.Config{Logger: newLogger}); err != nil {
 		return err
 	}
 	DB.SetConnMaxLifetime(time.Minute * 3)

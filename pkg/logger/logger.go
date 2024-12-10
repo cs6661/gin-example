@@ -1,8 +1,11 @@
 package logger
 
 import (
+	"context"
 	"fmt"
 	"gin-example/config"
+	"gin-example/pkg/constant"
+	"github.com/gin-gonic/gin"
 	"os"
 
 	"github.com/natefinch/lumberjack"
@@ -64,4 +67,25 @@ func InitLogger(conf *config.LogConfig) {
 	// 替换zap包中全局的logger实例，后续在其他包中只需使用zap.L()调用即可
 	zap.ReplaceGlobals(Logger)
 
+}
+
+func Ctx(c *gin.Context) *zap.Logger {
+	traceId, exists := c.Get(constant.TraceId)
+	if exists {
+		named := Logger.Named(traceId.(string))
+		return named
+	}
+	return Logger
+}
+
+func Ctxs(ctx context.Context) *zap.Logger {
+	if ctx == nil {
+		return Logger
+	}
+	l := ctx.Value(constant.TraceId)
+	if l == nil {
+		return Logger
+	}
+	named := Logger.Named(l.(string))
+	return named
 }
